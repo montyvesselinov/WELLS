@@ -28,10 +28,7 @@ wells
 *.archive
 *.runs
 *.phi
-*debug*
 *.running
-*.s_point
-*.s_well
 *.ofe
 *.igpd-opt*
 *.mads_output_*
@@ -44,7 +41,6 @@ wells
 *.sobol_sens_index
 *.sobol_sens_total
 *output
-*.wells
 # Genereal files
 *.dat
 *.zip

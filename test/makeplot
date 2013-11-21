@@ -1,0 +1,18 @@
+#!/bin/tcsh -f
+if($#argv < 1) then
+ echo "Figure Name misssing ??"
+ exit(0)
+endif
+
+echo "making $1.eps"
+
+gnuplot -persist << EOF
+set term postscript eps enhanced color
+set output "$1.eps"
+set xlabel "Time [ Days ] "
+set ylabel " Drawdown [ m ] "
+set ytics nomirror
+set style line 1 lt 1 lw 3 pt 3 lc rgb "red"
+plot "$1.s_point" using 1:5 title "Line" w l ls 1
+EOF
+epstopdf $1.eps 
