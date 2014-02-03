@@ -92,7 +92,8 @@ int main( int argn, char *argv[] )
 	free_char_matrix( pdt.id, pdt.nP );
 	free( pdt.x ); free( pdt.y ); free( pdt.h );
 	free_double_matrix( pdt.t, pdt.nP ); free_double_matrix( pdt.s, pdt.nP );
-	free( wdt.k ); free( wdt.S );
+	//free( wdt.k );
+	//free( wdt.S );
 	free( wdt.k2 ); free( wdt.S2 );
 
 	exit( 0 );	
