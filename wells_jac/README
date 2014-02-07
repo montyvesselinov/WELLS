@@ -1,0 +1,3 @@
+wells_hw_jac_090306.c - Jacob's approximation with output of % of calculations and time where Jacob's approx. is valid
+wells_hw_jac2_090306.c - Jacob's approximation only
+wells_hw_jac3_090306.c - Jacob's approximation, s=0 when u>0.1
