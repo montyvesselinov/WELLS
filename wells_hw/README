@@ -1,0 +1,21 @@
+This code computes drawdown due to pumping at multiple wells and a linear temporal trend. 
+The code expects consistent length and time units for all the parameters.
+
+To compile:
+A makefile is provided; typing make in this folder on Linux machines should produce the executable.
+Otherwise, the following commands can be entered at the prompt:
+
+cc wells.c -lm -o wells
+
+substituting an appropriate compiler if cc is not available.
+
+Example:
+A simple example input file is provided.
+Two pumping wells and one observation well are included.
+To test the example, enter:
+
+wells ex01.wells
+
+at the prompt. If successful, the output file 'ex01.s_point' and a debug file 'ex01.wells_debug' will be created.
+More elaborate examples can be created by modifying 'ex01.wells'. Comments in 'ex01.wells' provide information about
+the input parameters.
