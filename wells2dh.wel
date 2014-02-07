@@ -1,0 +1,42 @@
+Problem name: test
+Aquifer type        : 1
+Boundary information: 1 1 0 0 0
+--- Number of  wells: 2
+w1      2995.00      1920.00  0.120  5
+Initial Head        : 2000
+Aquifer tickness    : 1
+Permeability        : 1.0
+Storage coefficient : -2.0
+Leakage coefficient : -10.0
+0  5000
+10 0
+20 2000
+30 9
+40 3000
+w2      2005.00      1020.00  0.120  5 
+Initial Head        : 2000
+Aquifer tickness    : 1
+Permeability        : 5
+Storage coefficient : -5
+Leakage coefficient : -3
+0  5000
+10 0
+20 2000
+30 9
+40 3000
+--- Number of points: 1
+p1      2995.00      1920.00  11
+Initial Head        : 2000
+Permeability        : 3
+Storage coefficient : -1
+0
+1
+2
+3
+4
+5
+10
+15
+20
+30
+40
