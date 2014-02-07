@@ -3,7 +3,7 @@
 #define YES     1
 #define NO      0
 
-#define MAXFILENAME  95
+#define MAXFILENAME  1024
 
 /* Data extensions */
 #define DATAEXT     ".dat"
