@@ -1,5 +1,5 @@
-#define MAXNAME 61
-#define MAXFILENAME  95
+#define MAXNAME 1024
+#define MAXFILENAME  1024
 #define TRUE    1
 #define FALSE   0
 #define YES     1
