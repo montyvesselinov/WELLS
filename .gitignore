@@ -1,5 +1,8 @@
 syntax: glob
 # MADS files
+*/wells
+*/wells_hw_exp
+*/wells_hw_exp2
 wells
 wells_hw
 wells_hwp
