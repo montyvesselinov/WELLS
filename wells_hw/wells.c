@@ -64,11 +64,11 @@ int main( int argn, char *argv[] )
 		printf( "Usage: wells in:problem_file out:well_drawdown out:point_drawdown\n" );
 		exit( 1 );
 	}
-	strcpy( root, argv[1] ); 
+	strcpy( root, argv[1] );
 	dot = strstr( root, "." );
 	if( dot != NULL ) { dot[0] = 0; strcpy( pit.file, argv[1] ); }
 	else sprintf( pit.file, "%s.wells", argv[1] );
-	printf( "Root: %s\n", root );	
+	printf( "Root: %s\n", root );
 	printf( "Input problem file: %s\n", pit.file );
 
 	// Read input data
@@ -83,7 +83,7 @@ int main( int argn, char *argv[] )
 
 	// Write results into S_POINT file
 	CalcSave_Points( pit.file, adt, &wdt, &pdt );
-	
+
 	// Free variables
 	free_char_matrix( wdt.id, wdt.nW );
 	free( wdt.x ); free( wdt.y ); free( wdt.r ); free( wdt.h );
@@ -96,7 +96,7 @@ int main( int argn, char *argv[] )
 	//free( wdt.S );
 	free( wdt.k2 ); free( wdt.S2 );
 
-	exit( 0 );	
+	exit( 0 );
 }
 
 void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well_Data *wd, struct Point_Data *pd )
@@ -120,7 +120,7 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 	// Collect number of pumping wells
 	fscanf( infile, "%[^:]s", buf ); fscanf( infile, ": %i%*[^\n]s", &(*wd).nW, buf ); fscanf( infile, "\n" );
 	printf( "Number of pumping wells %d\n", (*wd).nW );
-	
+
 	// Allocate pumping well variables
 	wd->id = char_matrix( (*wd).nW, MAXNAME );
 	wd->x = (double *) malloc( (*wd).nW * sizeof( double ) );
@@ -141,7 +141,7 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 	wd->t = (double **) malloc( (*wd).nW * sizeof( double *) );
 	wd->s = (double **) malloc( (*wd).nW * sizeof( double *) );
 
-	// Collect pumping well parameters and input data	
+	// Collect pumping well parameters and input data
 	for( i = 0; i < (*wd).nW; i++ )
 	{
 		printf( "pumping well %d: ", i + 1 );
@@ -151,8 +151,8 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 
 		//Allocate pumping rate, time, and drawdown variables for ith well
 		wd->Q[i] = (double *) malloc( (*wd).nQ[i] * sizeof( double ) );
-		wd->t[i] = (double *) malloc( (*wd).nQ[i] * sizeof( double ) );  
-		wd->s[i] = (double *) malloc( (*wd).nQ[i] * sizeof( double ) );     
+		wd->t[i] = (double *) malloc( (*wd).nQ[i] * sizeof( double ) );
+		wd->s[i] = (double *) malloc( (*wd).nQ[i] * sizeof( double ) );
 
 		printf( "%s %g %g %g %i ", (*wd).id[i], (*wd).x[i], (*wd).y[i], (*wd).r[i], (*wd).nQ[i] );
 
@@ -175,16 +175,16 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 			(*wd).kfcn[i] = 0; // const_k flag
 		}
 		// Exponential conductivity function if two parameters
-		else if( sscanf( buf, "%s %s", buf1 , buf2 ) == 2 ) 
+		else if( sscanf( buf, "%s %s", buf1 , buf2 ) == 2 )
 		{
 			// Change D to e if input file generated using that other languange
 			dot = strstr( buf, "D" );
 			if( dot != NULL ) { dot[0] = 'e'; }
-			
+
 			// Collect first par k*exp(k2/t)
 			sscanf( buf1, "%lf", &(*wd).k[i] );
 			(*wd).k[i] = pow( 10, (*wd).k[i] );
-			
+
 			// Change D to e if input file generated using that other languange
 			dot = strstr( buf2, "D" );
 			if( dot != NULL ) { dot[0] = 'e'; }
@@ -212,16 +212,16 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 			(*wd).Sfcn[i] = 0; // const_S flag
 		}
 		// Exponential storativity function if two parameters
-		else if( sscanf( buf, "%s %s", buf1 , buf2 ) == 2 ) 
+		else if( sscanf( buf, "%s %s", buf1 , buf2 ) == 2 )
 		{
 			// Change D to e if input file generated using that other languange
 			dot = strstr( buf, "D" );
 			if( dot != NULL ) { dot[0] = 'e'; }
-			
+
 			// Collect first par S*exp(S2/t)
 			sscanf( buf1, "%lf", &(*wd).S[i] );
 			(*wd).S[i] = pow( 10, (*wd).S[i] );
-			
+
 			// Change D to e if input file generated using that other languange
 			dot = strstr( buf2, "D" );
 			if( dot != NULL ) { dot[0] = 'e'; }
@@ -234,7 +234,7 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 		}
 		fgets( buf, 100, infile ); //Grab remainder of line
 
-	
+
 		// Collect leakage coefficient parameter
 		fscanf( infile, "%[^:]s", buf ); fscanf( infile, ": %lf%*[^\n]s", &(*wd).B[i], buf ); fscanf( infile, "\n" );
 
@@ -255,7 +255,7 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 
 		// Compute non-log-transformed leakage coefficient
 		(*wd).B[i] = pow( 10, (*wd).B[i] );
-		
+
 		// Collect times and pumping rates for the ith well
 		for( j = 0; j < (*wd).nQ[i]; j++ )
 		{
@@ -288,14 +288,14 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 		fscanf( infile, "%s %lf %lf %i%*[^\n]s", (*pd).id[i], &(*pd).x[i], &(*pd).y[i], &(*pd).nT[i], buf ); fscanf( infile, "\n" );
 
 		// Allocate time and drawdown arrays for ith point
-		pd->t[i] = (double *) malloc( (*pd).nT[i] * sizeof( double ) ); 
+		pd->t[i] = (double *) malloc( (*pd).nT[i] * sizeof( double ) );
 		pd->s[i] = (double *) malloc( (*pd).nT[i] * sizeof( double ) );
 
 		// Collect h_0
 		fscanf( infile, "%[^:]s", buf ); fscanf( infile, ": %lf%*[^\n]s", &(*pd).h[i], buf ); fscanf( infile, "\n" );
 
 		// Collect temporal trend parameter(s), checking for one (linear) or two (exponential) parameters
-		fscanf( infile, "%[^:]s", buf ); fscanf( infile, ":%[^#\n]s", buf ); 
+		fscanf( infile, "%[^:]s", buf ); fscanf( infile, ":%[^#\n]s", buf );
 		// Linear temporal trend if one parameter
 		if( sscanf( buf, "%s %s", buf1, buf2 ) == 1 )
 		{
@@ -307,7 +307,7 @@ void Load_Problem( struct Problem_Info *pi, struct Aquifer_Data *ad, struct Well
 			(*pd).trnd = 1; // linear trend flag
 		}
 		// Exponential trend if two parameters
-		else if( sscanf( buf, "%s %s", buf1 , buf2 ) == 2 ) 
+		else if( sscanf( buf, "%s %s", buf1 , buf2 ) == 2 )
 		{
 			dot = strstr( buf, "D" );
 			if( dot != NULL ) { dot[0] = 'e'; }
@@ -565,7 +565,7 @@ void Calc_Points( struct Aquifer_Data ad, struct Well_Data *wd, struct Point_Dat
 void CalcSave_Points( char *fileName, struct Aquifer_Data ad, struct Well_Data *wd, struct Point_Data *pd )
 {
 	int   i, j, k, code1, code2, code3;
-	double x, y, xc, yc, ca, sa,
+	double x, y, xc, yc, ca, sa, strnd, sss, ss,
 			(*fp)( double x, double y, double time, double h, struct Well_Data *wd );
 	FILE *outfile;
 
@@ -601,14 +601,12 @@ void CalcSave_Points( char *fileName, struct Aquifer_Data ad, struct Well_Data *
 		fprintf( outfile, "\n" ) ;
 		for( j = 0; j < (*pd).nT[i]; j++ )
 		{
-			if( (*pd).trnd == 1 ) // linear trend
-			{
-				(*pd).s[i][j] = ( (*pd).t[i][j] - (*wd).t[i][0] ) * (*pd).c0[i] + fp( (*pd).x[i], (*pd).y[i], (*pd).t[i][j], (*pd).h[i], wd );
-			}
-			else if ( (*pd).trnd == 2 ) // exponential trend
-			{
-				(*pd).s[i][j] = ( (*pd).c0[i] * exp( (*pd).c1[i] * ( (*pd).t[i][j] - (*wd).t[i][0] ) ) ) + fp( (*pd).x[i], (*pd).y[i], (*pd).t[i][j], (*pd).h[i], wd );
-			}
+			ss = fp( (*pd).x[i], (*pd).y[i], (*pd).t[i][j], (*pd).h[i], wd );
+			sss = 0;
+			for( k = 0; k < (*wd).nW; k++ )
+				sss += (*wd).sw[k];
+			printf("%g %g\n", ss, sss);
+			(*pd).s[i][j] = ss;
 			if( ad.co_x_axis != NO_BOUNDARY || ad.co_y_axis != NO_BOUNDARY )
 			{
 				xc = (*pd).x[i] - ad.origin_x;
@@ -634,14 +632,12 @@ void CalcSave_Points( char *fileName, struct Aquifer_Data ad, struct Well_Data *
 					(*pd).s[i][j] += code3 * fp( xc, yc, (*pd).t[i][j], (*pd).h[i], wd );
 				}
 			}
-			if( (*pd).trnd == 1 )
-			{
-				fprintf( outfile, "%g %.6f %g %g", (*pd).t[i][j], (*pd).h[i] - (*pd).s[i][j], (*pd).s[i][j], ( (*pd).t[i][j] - (*pd).t[i][0] ) * (*pd).c0[i] );
-			}
-			else if( (*pd).trnd == 2 )
-			{
-				fprintf( outfile, "%g %.6f %g %g", (*pd).t[i][j], (*pd).h[i] - (*pd).s[i][j], (*pd).s[i][j], (*pd).c0[i] * exp( (*pd).c1[i] * ( (*pd).t[i][j] - (*pd).t[i][0] ) ) );
-			}
+			if( (*pd).trnd == 1 ) // linear trend
+				strnd = ( (*pd).t[i][j] - (*wd).t[i][0] ) * (*pd).c0[i];
+			else if ( (*pd).trnd == 2 ) // exponential trend
+				strnd = ( (*pd).c0[i] * exp( (*pd).c1[i] * ( (*pd).t[i][j] - (*wd).t[i][0] ) ) );
+			(*pd).s[i][j] += strnd;
+			fprintf( outfile, "%g %.6f %g %g", (*pd).t[i][j], (*pd).h[i] - (*pd).s[i][j], (*pd).s[i][j], strnd);
 			for( k = 0; k < (*wd).nW; k++ )
 			{
 				fprintf( outfile, " %g", (*wd).sw[k] ) ;
@@ -679,16 +675,16 @@ double Theis( double x, double y, double time, double h, struct Well_Data *wd )
 				T = (*wd).m[i] * (*wd).k[i] *exp( (*wd).k2[i] / del_t ); // Exp T
 				if( T > 1E300 ) T = 1E300; // This happens if del_t ~ 0
 			}
-			
+
 			// Calculate S if using exp S
 			if( (*wd).Sfcn[i] == 1 ) {
 				S = (*wd).S[i] * exp( (*wd).S2[i] / del_t );
 				if( S > 1E300 ) S = 1E300; // This happens if del_t ~ 0
 			}
-			
+
 			// Calculate well function argument
 			u = S * r2 / ( 4 * T * del_t );
-	
+
 			ss = (*wd).Q[i][0] * Ei( u ) / ( 4 * 3.14159265 * T ); /* initial drawdown */
 			(*wd).sw[i] += ss; 	// Save dd for individual wells
 			s += ss;		// Accumulate dd
@@ -704,13 +700,13 @@ double Theis( double x, double y, double time, double h, struct Well_Data *wd )
 					T = (*wd).m[i] * (*wd).k[i] *exp( (*wd).k2[i] / del_t ); // Exp T
 					if( T > 1E300 ) T = 1E300; // This happens if del_t ~ 0
 				}
-				
+
 				// Calculate S
 				if( (*wd).Sfcn[i] == 1 ) {
 					S = (*wd).S[i] * exp( (*wd).S2[i] / del_t );
 					if( S > 1E300 ) S = 1E300; // This happens if del_t ~ 0
 				}
-				
+
 				// Calculate well function argument
 				u = S * r2 / ( 4 * T * del_t );
 
@@ -734,8 +730,8 @@ double Theis_unc( double x, double y, double time, double h, struct Well_Data *w
 	{
 		sub1 = 6.2831853 * k[i];
 		sub2 = S[i] / ( 4.0 * k[i] * (*wd).m[i] );
-		dx = x - (*wd).x[i];	
-		dy = y - (*wd).y[i];	
+		dx = x - (*wd).x[i];
+		dy = y - (*wd).y[i];
 		r = dx * dx + dy * dy;
 		sub3 = (*wd).r[i] * (*wd).r[i];
 		if( r < sub3 ) r = sub3;
@@ -905,7 +901,7 @@ char **char_matrix( int maxCols, int maxRows )
 {
         char **matrix;
         int i;
- 
+
         if( ( matrix = (char **) malloc( maxCols * sizeof( char * ) ) ) == NULL )
                 return( NULL );
         for( i = 0; i < maxCols; i++ )
@@ -940,7 +936,7 @@ double **double_matrix( int maxCols, int maxRows )
 void free_double_matrix( double **matrix, int maxCols )
 {
         int i;
- 
+
         for( i = 0; i < maxCols; i++ )
                 free( matrix[i] );
         free( matrix );
@@ -949,7 +945,7 @@ void free_double_matrix( double **matrix, int maxCols )
 void free_char_matrix( char **matrix, int maxCols )
 {
         int i;
- 
+
         for( i = 0; i < maxCols; i++ )
                 free( matrix[i] );
         free( matrix );
